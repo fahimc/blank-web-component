@@ -11,6 +11,10 @@
   "main": "web-blank.html",
   "license": "https://github.com/company/web-blank/LICENSE.txt",
   "homepage": "https://github.com/company/web-blank/",
+  "ignore": [
+    "/.gitignore",
+    "/test/"
+  ],
   "dependencies": {
   },
   "devDependencies": {}
