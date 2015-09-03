@@ -1,0 +1,22 @@
+{
+  "name": "web-blank",
+  "authors": [
+    "companyName"
+  ],
+  "description": "A web component",
+  "keywords": [
+    "web component",
+    "polymer"
+  ],
+  "main": "web-blank.html",
+  "license": "https://github.com/company/web-blank/LICENSE.txt",
+  "homepage": "https://github.com/company/web-blank/",
+  "ignore": [
+    "/.gitignore",
+    "/test/"
+  ],
+  "dependencies": {
+  	"web-app": "^2.0.0"
+  },
+  "devDependencies": {}
+}
