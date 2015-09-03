@@ -16,7 +16,6 @@
     "/test/"
   ],
   "dependencies": {
-  	//"web-app": "^2.0.0"
   },
   "devDependencies": {}
 }
