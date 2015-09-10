@@ -50,7 +50,7 @@ module.exports = function (grunt) {
       }
     },
     pushReleaseBranch: {
-      command: 'git push --follow-tags',
+      command: 'git push origin release --follow-tags',
       options: {
       }
     },
