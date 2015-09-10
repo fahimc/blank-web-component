@@ -106,7 +106,7 @@ function bumpVersionNumber(type){
     arr[2] = Number(arr[2])+1;
     break;
     case 'major':
-    arr[0] = Number(arr[0])+1;
+    arr[0] = "v"+Number(arr[0])+1;
     arr[1] = "0";
     arr[2] = "0";
     break;
