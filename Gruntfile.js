@@ -107,6 +107,7 @@ function bumpVersionNumber(type){
     arr[2] = Number(arr[2])+1;
     break;
     case 'major':
+    if(Number(arr[0])==NaN)arr[0] = 0;
     arr[0] = "v"+String(Number(arr[0])+1);
     arr[1] = "0";
     arr[2] = "0";
