@@ -96,6 +96,7 @@ module.exports = function (grunt) {
 
 
 function bumpVersionNumber(type){
+  console.log("before "+grunt.option("versionNumber"));
   var arr = grunt.option("versionNumber").split(".");
   switch(type){
     case 'minor':
