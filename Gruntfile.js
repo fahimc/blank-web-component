@@ -81,7 +81,7 @@ module.exports = function (grunt) {
       }
     },
     createReleaseTag: {
-      command: "git tag -a <%= grunt.option(\"versionNumber\") %> -m 'Release <%= grunt.option(\"versionNumber\") %>'" ,
+      command: "git tag -a <%= grunt.option(\"versionNumber\") %> -m \"Release <%= grunt.option(\"versionNumber\") %>\"" ,
       options: {
       }
     }
