@@ -73,8 +73,6 @@ module.exports = function (grunt) {
              grunt.option("versionNumber",  "v1.0.0");
           }else{
             grunt.option("versionNumber", stdOutStr);
-            console.log("version number:"+stdOutStr);
-
 
             var type="patch";
             if(grunt.option("minor") ){
@@ -102,18 +100,18 @@ function bumpVersionNumber(type){
   switch(type){
     case 'minor':
     arr[1] = Number(arr[1])+1;
-    arr[0] = 0;
+    arr[0] = "0";
     break;
     case 'patch':
     arr[2] = Number(arr[2])+1;
     break;
     case 'major':
     arr[0] = Number(arr[0])+1;
-    arr[1] = 0;
-    arr[2] = 0;
+    arr[1] = "0";
+    arr[2] = "0";
     break;
   }
-
+console.log(arr.join("."));
   grunt.option("versionNumber",arr.join("."));
 }
 
