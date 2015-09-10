@@ -101,7 +101,7 @@ function bumpVersionNumber(type){
   switch(type){
     case 'minor':
     arr[1] = Number(arr[1])+1;
-    arr[0] = "0";
+    arr[2] = "0";
     break;
     case 'patch':
     arr[2] = Number(arr[2])+1;
