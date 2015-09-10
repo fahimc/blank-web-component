@@ -74,7 +74,15 @@ module.exports = function (grunt) {
           }else{
             grunt.option("versionNumber", stdOutStr);
             console.log("version number:"+stdOutStr);
-            bumpVersionNumber('minor');
+
+
+            var type="patch";
+            if(grunt.option("minor") ){
+              type="minor";
+            }else if(grunt.option("major")){
+              type="major";
+            }
+            bumpVersionNumber(type);
           }
           done();
         }
@@ -93,11 +101,16 @@ function bumpVersionNumber(type){
   var arr = grunt.option("versionNumber").split(".");
   switch(type){
     case 'minor':
-    arr[2] = Number(arr[2])+1;
+    arr[1] = Number(arr[1])+1;
+    arr[0] = 0;
     break;
     case 'patch':
+    arr[2] = Number(arr[2])+1;
     break;
     case 'major':
+    arr[0] = Number(arr[0])+1;
+    arr[1] = 0;
+    arr[2] = 0;
     break;
   }
 
