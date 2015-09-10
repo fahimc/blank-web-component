@@ -117,9 +117,20 @@ function bumpVersionNumber(type){
   grunt.option("versionNumber",arr.join("."));
 }
 
+grunt.registerTask("force",function(set){
+    if (set === "on") {
+        grunt.option("force",true);
+    }
+    else if (set === "off") {
+        grunt.option("force",false);
+    }
+    else if (set === "restore") {
+        grunt.option("force",previous_force_state);
+    }
+});
 
 grunt.registerTask('default', []);
-grunt.registerTask('rb', ['shell:switchToReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replace:bower','shell:commitReleaseBranch','shell:getLastTag','shell:createReleaseTag','shell:pushReleaseBranch']);
+grunt.registerTask('rb', ['shell:switchToReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replace:bower','force:on','shell:commitReleaseBranch','force:off','shell:getLastTag','shell:createReleaseTag','shell:pushReleaseBranch']);
 grunt.registerTask('release', ['replace:bower']);
 
 };
