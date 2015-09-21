@@ -2,6 +2,7 @@ var path = require('path');
 var fs = require('fs');
 
 var TaskRunner = {
+  version: '',
   init: function (grunt) {
     this.loadNPM(grunt);
     this.register(grunt);
@@ -40,9 +41,18 @@ var TaskRunner = {
             execOptions: {
               cwd: './'
             },
-            callback: function(exitCode, stdOutStr, stdErrStr, done) { 
-              console.log(stdOutStr);
-                done();
+            callback: function (exitCode, stdOutStr, stdErrStr, done) {
+              if (stdErrStr) {
+                console.log("No Tags found");
+                grunt.option("versionNumber", "v1.0.0");
+              } else {
+                grunt.option("versionNumber", stdOutStr);
+                console.log("Tags found");
+              }
+
+              TaskRunner.bumpVersionNumber(grunt);
+
+              done();
             }
           }
         }
@@ -52,8 +62,33 @@ var TaskRunner = {
   registerCustomTasks: {
 
   },
+  bumpVersionNumber: function (grunt) {
+    var type = "patch";
+    if (grunt.option("minor")) {
+      type = "minor";
+    } else if (grunt.option("major")) {
+      type = "major";
+    }
+    var arr = grunt.option("versionNumber").split(".");
+    switch (type) {
+      case 'minor':
+        arr[1] = Number(arr[1]) + 1;
+        arr[2] = "0";
+        break;
+      case 'patch':
+        arr[2] = Number(arr[2]) + 1;
+        break;
+      case 'major':
+        arr[0] = "v" + String(Number(arr[0].replace("v", "")) + 1);
+        arr[1] = "0";
+        arr[2] = "0";
+        break;
+    }
+    console.log("New Tag created" + arr.join("."));
+    grunt.option("versionNumber", arr.join("."));
+  }
   register: function (grunt) {
-    grunt.registerTask('release', ['shell:getReleaseBranch','shell:fetchTags','shell:getLatestTag']);
+    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags', 'shell:getLatestTag']);
   }
 
 }
