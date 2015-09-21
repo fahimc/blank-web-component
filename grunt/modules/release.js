@@ -86,7 +86,7 @@ var TaskRunner = {
     }
     console.log("New Tag created" + arr.join("."));
     grunt.option("versionNumber", arr.join("."));
-  }
+  },
   register: function (grunt) {
     grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags', 'shell:getLatestTag']);
   }
