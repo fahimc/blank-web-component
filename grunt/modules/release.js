@@ -22,7 +22,7 @@ var TaskRunner = {
 				command: 'git checkout release',
 				options: {
 					execOptions: {
-						cwd: './'+grunt.option('name')+'/'
+						cwd: './'
 					}
 				}
 			}
@@ -33,7 +33,7 @@ var TaskRunner = {
 
   },
   register: function (grunt) {
-    grunt.registerTask('release', ['lint']);
+    grunt.registerTask('release', ['shell:getReleaseBranch']);
   }
 
 }
