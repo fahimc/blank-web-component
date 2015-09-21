@@ -14,26 +14,46 @@ var TaskRunner = {
     grunt.loadNpmTasks('grunt-shell-spawn');
   },
   getGruntConfig: function (grunt) {
-  	var directory = grunt.option('project');
+    var directory = grunt.option('project');
 
     return {
-    	shell: {
-    		getReleaseBranch: {
-				command: 'git checkout release',
-				options: {
-					execOptions: {
-						cwd: './'+grunt.option('name')+'/'
-					}
-				}
-			}
-    	}
+      shell: {
+        getReleaseBranch: {
+          command: 'git checkout release',
+          options: {
+            execOptions: {
+              cwd: './'
+            }
+          }
+        },
+        fetchTags: {
+          command: 'git fetch --tags origin release',
+          options: {
+            execOptions: {
+              cwd: './'
+            }
+          }
+        },
+        getLatestTag: {
+          command: 'git describe --tags --abbrev=0',
+          options: {
+            execOptions: {
+              cwd: './'
+            },
+            callback: function(exitCode, stdOutStr, stdErrStr, done) { 
+              console.log(stdOutStr);
+                done();
+            }
+          }
+        }
+      }
     };
   },
-  registerCustomTasks:{
+  registerCustomTasks: {
 
   },
   register: function (grunt) {
-    grunt.registerTask('release', ['lint']);
+    grunt.registerTask('release', ['shell:getReleaseBranch','shell:fetchTags','shell:getLatestTag']);
   }
 
 }

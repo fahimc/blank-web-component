@@ -7,7 +7,7 @@ var Main = {
     "release"
   ],
   config: {
-    modulesPath: "modules/"
+    modulesPath: "grunt/modules/"
   },
   gruntConfig: {},
   init: function (grunt) {
