@@ -100,8 +100,13 @@ var TaskRunner = {
           options: {
           }
         },
-        pushReleaseBranch: {
+        pushReleaseTag: {
           command: 'git push origin release <%= grunt.option(\"versionNumber\") %>',
+          options: {
+          }
+        },
+        pushReleaseBranch: {
+          command: 'git push origin release',
           options: {
           }
         },
@@ -201,7 +206,7 @@ register: function (grunt) {
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch','shell:pullReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','force:on','shell:deleteLocalTag','force:off','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
+    grunt.registerTask('release', ['shell:getReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:fetchTags', 'shell:getLatestTag','tagPrompt','force:on','force:off','shell:createReleaseTag','shell:pushReleaseBranch','shell:pushReleaseTag','shell:getDevelopBranch']);
   }
 
 }
