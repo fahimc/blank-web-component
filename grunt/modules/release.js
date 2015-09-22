@@ -61,14 +61,6 @@ var TaskRunner = {
             }
           }
         },
-        deleteLocalTag: {
-          command: 'git tag -d <%= grunt.option(\"versionNumber\") %>',
-          options: {
-            execOptions: {
-              cwd: './'
-            }
-          }
-        },
         getLatestTag: {
           command: 'git describe --tags --abbrev=0',
           options: {
@@ -148,9 +140,12 @@ var TaskRunner = {
      });
     },
     replaceBower:function(){
+       var done = this.async();
       if(TaskRunner._replaceBower){
         TaskRunner._grunt.task.run( 'replace' );
+         done();
       }else{
+         done();
       }
     },
     force:function(set){
@@ -193,7 +188,7 @@ var TaskRunner = {
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','shell:deleteLocalTag','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
+    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
   }
 
 }
