@@ -88,7 +88,7 @@ var TaskRunner = {
           }
         },
         commitReleaseBranch: {
-          command: 'git add --all && git commit -m "Replaced tags"',
+          command: 'git add -A && git commit -m "Merged release version <%= grunt.option(\"versionNumber\") %>"',
           options: {
           }
         },
