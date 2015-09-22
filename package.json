@@ -1,20 +1,43 @@
 {
-  "name": "uifr-release",
-  "description": "",
-  "repository": "https://github.com/thomsonreuters/uifr-release",
-  "main": "uif.less",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-      "grunt": "^0.4.5",
-      "grunt-replace": "^0.10.2",
-      "grunt-contrib-copy": "^0.7.0",
-      "eslint-plugin-html": "^1.0.2",
-      "grunt-eslint": "^17.1.0",
-      "grunt-shell-spawn": "^0.3.2",
-      "grunt-bump": "^v0.5.0"
-    }
-  }
+  "name": "jet-dev",
+  "description": "Fully-fledged dev environment for UIFramework developers",
+  "keywords": [
+    "development",
+    "environment",
+    "jet",
+    "dev",
+    "UIFramework"
+  ],
+  "homepage": "https://github.com/thomsonreuters/jet-dev",
+  "license": "https://github.com/thomsonreuters/jet-dev/LICENSE.txt",
+  "author": {
+    "name": "Thomson Reuters Eikon",
+    "url": "https://github.com/thomsonreuters"
+  },
+  "main": "./bin/index.js",
+  "bin": {
+    "jet-dev": "./bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thomsonreuters/jet-dev.git"
+  },
+  "dependencies": {
+    "eslint-plugin-html": "^1.0.2",
+    "express": "^3.4.8",
+    "grunt": "^0.4.5",
+    "grunt-confirm": "^1.0.2",
+    "grunt-contrib-copy": "^0.8.1",
+    "grunt-eslint": "^17.1.0",
+    "grunt-replace": "^0.10.2",
+    "load-grunt-tasks": "^3.2.0",
+    "open": "^0.0.5",
+    "grunt-shell-spawn": "^0.3.9",
+    "prompt": "^0.2.14",
+    "shelljs": "^0.5.3"
+  },
+  "preferGlobal": true,
+  "publishConfig" : {  
+    "registry" : "http://nexus.commodities.int.thomsonreuters.com/content/repositories/npm-internal/"  
+  }  
+}

@@ -1,0 +1,19 @@
+# Folders to be included by ESLint. Please keep organised :)
+
+jet-app
+jet-betabar
+jet-button
+jet-checkbox
+jet-content
+jet-datepicker
+jet-dev
+jet-icon
+jet-input
+jet-panel
+jet-radio-button
+jet-repeater
+jet-seed
+jet-select
+jet-split-button
+jet-table
+jet-toggle-button

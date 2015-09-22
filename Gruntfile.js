@@ -1,136 +1,43 @@
+var path = require('path');
 
-module.exports = function (grunt) {
-
- grunt.loadNpmTasks('grunt-replace');
- grunt.loadNpmTasks('grunt-eslint');
- grunt.loadNpmTasks('grunt-shell-spawn');
- grunt.loadNpmTasks('grunt-bump');
-
-
- grunt.initConfig({
-  eslint: {
-    options: {
-      configFile:  './test/lint/.eslintrc',
-      ignorePath:'./test/lint/.eslintignore',
-      extensions: ['.js', '.html', '.xhtml', '.htm'],
-      format: (grunt.option('o') === undefined && grunt.option('output') === undefined) ? 'stylish' : 'html',
-      outputFile: (grunt.option('o') === undefined && grunt.option('output') === undefined) ? '' :'./test/reports/lint.html'
-    },
-    one: './'
+var Main = {
+	//add modules here located in the modules folder
+  modules: [
+    "test",
+    "release"
+  ],
+  config: {
+    modulesPath: "grunt/modules/"
   },
-  replace: {
-    bower: {
-      options: {
-        patterns: [
-        {
-          match: /bower_components/g,
-          replacement: '..'
-        }
-        ]
-      },
-      files: [
-      {
-        cwd: './',
-        expand: true,
-        src: ['**/*.{html,xhtml,htm,js}', '!**/bower_components/**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
-        dest: './'
+  gruntConfig: {},
+  init: function (grunt) {
+    this.loadModules(grunt);
+  },
+  loadModules: function (grunt) {
+    for (var a = 0; a < this.modules.length; a++) {
+      var module = require(path.join(__dirname, this.config.modulesPath + this.modules[a] + ".js"));
+      var initconfig = module(grunt);
+      this.addToInitConfig(initconfig);
+    }
+    this.setInitConfig(grunt);
+  },
+  addToInitConfig: function (config) {
+    for (var key in config) {
+      //check if key exists in initConfig
+      if (this.gruntConfig[key]) {
+      		//has key
+      		for(var subKey in config[key]){
+      			this.gruntConfig[key][subKey] = config[key][subKey];
+      		}
+      }else{
+      		//not in initConfig
+      		this.gruntConfig[key] = config[key];
       }
-      ]
     }
   },
-  shell: {
-    switchToReleaseBranch: {
-      command: 'git checkout release',
-      options: {
-      }
-    },
-    pullReleaseBranch: {
-      command: 'git pull origin release',
-      options: {
-      }
-    },
-    pushReleaseBranch: {
-      command: 'git push origin release --follow-tags',
-      options: {
-      }
-    },
-    mergeMasterBranch: {
-      command: 'git merge master',
-      options: {
-      }
-    },
-    commitReleaseBranch: {
-      command: 'git add --all && git commit -m "Replaced tags"',
-      options: {
-      }
-    },
-    getLastTag: {
-      command: 'git describe --abbrev=0 --tags',
-      options: {
-        callback: function(exitCode, stdOutStr, stdErrStr, done) { 
-          if(stdErrStr)
-          {
-             grunt.option("versionNumber",  "v1.0.0");
-          }else{
-            grunt.option("versionNumber", stdOutStr);
-
-            var type="patch";
-            if(grunt.option("minor") ){
-              type="minor";
-            }else if(grunt.option("major")){
-              type="major";
-            }
-            bumpVersionNumber(type);
-          }
-          done();
-        }
-      }
-    },
-    createReleaseTag: {
-      command: "git tag -a <%= grunt.option(\"versionNumber\") %> -m \"Release <%= grunt.option(\"versionNumber\") %>\"" ,
-      options: {
-      }
-    }
+  setInitConfig:function(grunt){
+  	 grunt.initConfig(this.gruntConfig);
   }
-});
-
-
-function bumpVersionNumber(type){
-  console.log("before "+grunt.option("versionNumber"));
-  var arr = grunt.option("versionNumber").split(".");
-  switch(type){
-    case 'minor':
-    arr[1] = Number(arr[1])+1;
-    arr[2] = "0";
-    break;
-    case 'patch':
-    arr[2] = Number(arr[2])+1;
-    break;
-    case 'major':
-    arr[0] = "v"+String(Number(arr[0].replace("v",""))+1);
-    arr[1] = "0";
-    arr[2] = "0";
-    break;
-  }
-console.log(arr.join("."));
-  grunt.option("versionNumber",arr.join("."));
 }
 
-grunt.registerTask("force",function(set){
-    if (set === "on") {
-        grunt.option("force",true);
-    }
-    else if (set === "off") {
-        grunt.option("force",false);
-    }
-    else if (set === "restore") {
-        grunt.option("force",previous_force_state);
-    }
-});
-
-grunt.registerTask('default', []);
-grunt.registerTask('rb', ['shell:switchToReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replace:bower','force:on','shell:commitReleaseBranch','force:off','shell:getLastTag','shell:createReleaseTag','shell:pushReleaseBranch']);
-grunt.registerTask('release', ['replace:bower']);
-
-};
-
+module.exports = Main.init.bind(Main);
