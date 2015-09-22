@@ -62,7 +62,7 @@ var TaskRunner = {
           }
         },
         deleteLocalTag: {
-          command: 'git tag -d v <%= grunt.option(\"versionNumber\") %>',
+          command: 'git tag -d <%= grunt.option(\"versionNumber\") %>',
           options: {
             execOptions: {
               cwd: './'
