@@ -61,6 +61,14 @@ var TaskRunner = {
             }
           }
         },
+        deleteLocalTag: {
+          command: 'git tag -d v <%= grunt.option(\"versionNumber\") %>',
+          options: {
+            execOptions: {
+              cwd: './'
+            }
+          }
+        },
         getLatestTag: {
           command: 'git describe --tags --abbrev=0',
           options: {
@@ -96,7 +104,15 @@ var TaskRunner = {
           command: 'git push origin release --follow-tags',
           options: {
           }
-        }
+        },
+        getDevelopBranch: {
+          command: 'git checkout develop',
+          options: {
+            execOptions: {
+              cwd: './'
+            }
+          }
+        },
       }
     };
   },
@@ -136,6 +152,14 @@ var TaskRunner = {
         TaskRunner._grunt.task.run( 'replace' );
       }else{
       }
+    },
+    force:function(set){
+      if (set === "on") {
+        grunt.option("force",true);
+      }
+      else if (set === "off") {
+        grunt.option("force",false);
+      }
     }
   },
   bumpVersionNumber: function (grunt) {
@@ -169,7 +193,7 @@ var TaskRunner = {
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower', 'shell:commitReleaseBranch', 'shell:getLatestTag','tagPrompt','shell:createReleaseTag','shell:pushReleaseBranch']);
+    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','shell:deleteLocalTag','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
   }
 
 }
