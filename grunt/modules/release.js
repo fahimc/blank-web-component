@@ -93,7 +93,7 @@ var TaskRunner = {
           }
         },
         pushReleaseBranch: {
-          command: 'git push origin release --follow-tags',
+          command: 'git push --tags origin release',
           options: {
           }
         },
