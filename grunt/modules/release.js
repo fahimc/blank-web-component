@@ -101,7 +101,7 @@ var TaskRunner = {
           }
         },
         pushReleaseBranch: {
-          command: 'git push --tags origin release',
+          command: 'git push origin release <%= grunt.option(\"versionNumber\") %>',
           options: {
           }
         },
