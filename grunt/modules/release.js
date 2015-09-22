@@ -48,6 +48,14 @@ var TaskRunner = {
             }
           }
         },
+        pullReleaseBranch: {
+          command: 'git pull origin release',
+          options: {
+            execOptions: {
+              cwd: './'
+            }
+          }
+        },
         mergeMasterBranch: {
           command: 'git merge master',
           options: {
@@ -193,7 +201,7 @@ register: function (grunt) {
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','force:on','shell:deleteLocalTag','force:off','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
+    grunt.registerTask('release', ['shell:getReleaseBranch','shell:pullReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','force:on','shell:deleteLocalTag','force:off','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
   }
 
 }
