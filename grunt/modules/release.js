@@ -14,6 +14,7 @@ var TaskRunner = {
   },
   loadNPM: function (grunt) {
     grunt.loadNpmTasks('grunt-shell-spawn');
+    grunt.loadNpmTasks('grunt-replace');
   },
   getGruntConfig: function (grunt) {
 
