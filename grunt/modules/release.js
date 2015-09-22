@@ -17,6 +17,7 @@ var TaskRunner = {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-mkdir');
     grunt.loadNpmTasks('grunt-shell-spawn');
+    grunt.loadNpmTasks('grunt-replace');
   },
   getGruntConfig: function (grunt) {
     var directory = grunt.option('project');
@@ -27,7 +28,7 @@ var TaskRunner = {
           options: {
             patterns: [
             {
-              match: /bower_components/g,
+              match: /../g,
               replacement: '..'
             }
             ]
@@ -36,7 +37,7 @@ var TaskRunner = {
           {
             cwd: './',
             expand: true,
-            src: ['**/*.{html,xhtml,htm,js}', '!**/bower_components/**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
+            src: ['**/*.{html,xhtml,htm,js}', '!**/../**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
             dest: './'
           }
           ]
@@ -136,7 +137,7 @@ var TaskRunner = {
     },
     replaceBower:function(){
       if(TaskRunner._replaceBower){
-        grunt.task.run( 'replace' );
+        TaskRunner._grunt.task.run( 'replace' );
       }else{
       }
     }
