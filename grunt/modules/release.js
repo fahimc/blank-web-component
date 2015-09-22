@@ -13,14 +13,10 @@ var TaskRunner = {
     return this.getGruntConfig(grunt);
   },
   loadNPM: function (grunt) {
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-mkdir');
     grunt.loadNpmTasks('grunt-shell-spawn');
     grunt.loadNpmTasks('grunt-replace');
   },
   getGruntConfig: function (grunt) {
-    var directory = grunt.option('project');
 
     return {
       replace: {
@@ -73,11 +69,11 @@ var TaskRunner = {
             },
             callback: function (exitCode, stdOutStr, stdErrStr, done) {
               if (stdErrStr) {
-                console.log("No Tags found");
+                grunt.log.error("No Tags found");
                 grunt.option("versionNumber", "v1.0.0");
               } else {
                 grunt.option("versionNumber", stdOutStr);
-                console.log("Tags found");
+                grunt.log.writeln("Tags found");
               }
 
               TaskRunner.bumpVersionNumber(grunt);
@@ -107,12 +103,12 @@ var TaskRunner = {
   registerCustomTasks: {
     tagPrompt:function(){
       var done = this.async();
-      console.log('Are you sure you want to create '+TaskRunner._grunt.option("versionNumber")+' tag?');
+      TaskRunner._grunt.log.subhead('Are you sure you want to create '+TaskRunner._grunt.option("versionNumber")+' tag?');
       prompt.message ='type \'y\' or \'n\' and hit enter';
       prompt.start();
       prompt.get(['continue'], function (err, result) {
         if(result.continue.trim().toLowerCase() === "y"){
-          console.log("\nokay creating tag "+TaskRunner._grunt.option("versionNumber"));
+          TaskRunner._grunt.log.ok("\nokay creating tag "+TaskRunner._grunt.option("versionNumber"));
           done();
         }else{
           TaskRunner._grunt.fail.fatal("tag cancelled");
@@ -121,19 +117,19 @@ var TaskRunner = {
     },
     replacePrompt:function(){
       var done = this.async();
-      console.log('do you want to replace bower file paths?');
+      TaskRunner._grunt.log.subhead('do you want to replace bower file paths?');
       prompt.message ='type \'y\' or \'n\' and hit enter';
       prompt.start();
       prompt.get(['continue'], function (err, result) {
         if(result.continue.trim().toLowerCase() === "y"){
-          console.log("\nokay replacing bower paths");
+          TaskRunner._grunt.log.ok("\nokay replacing bower paths");
           TaskRunner._replaceBower=true;
         }else{
-          console.log("\nokay NOT replacing bower paths");
-          TaskRunner._replaceBower=false;
-        }
-        done();
-      });
+         TaskRunner._grunt.log.error("\nokay NOT replacing bower paths");
+         TaskRunner._replaceBower=false;
+       }
+       done();
+     });
     },
     replaceBower:function(){
       if(TaskRunner._replaceBower){
@@ -164,8 +160,8 @@ var TaskRunner = {
       arr[2] = "0";
       break;
     }
-    console.log("New Tag created" + arr.join("."));
     grunt.option("versionNumber", arr.join("."));
+    grunt.log.ok("New Tag created" + arr.join("."));
   },
   register: function (grunt) {
     //register custom tasks
@@ -173,7 +169,7 @@ var TaskRunner = {
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower', 'shell:commitReleaseBranch', 'shell:getLatestTag','tagPrompt','shell:createReleaseTag']);
+    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower', 'shell:commitReleaseBranch', 'shell:getLatestTag','tagPrompt','shell:createReleaseTag','shell:pushReleaseBranch']);
   }
 
 }
