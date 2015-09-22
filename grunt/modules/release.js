@@ -206,7 +206,7 @@ register: function (grunt) {
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:fetchTags', 'shell:getLatestTag','tagPrompt','force:on','force:off','shell:createReleaseTag','shell:pushReleaseBranch','shell:pushReleaseTag','shell:getDevelopBranch']);
+    grunt.registerTask('release', ['shell:getReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:fetchTags','force:on', 'shell:getLatestTag','force:off','tagPrompt','shell:createReleaseTag','shell:pushReleaseBranch','shell:pushReleaseTag','shell:getDevelopBranch']);
   }
 
 }
