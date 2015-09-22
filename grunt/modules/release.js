@@ -97,6 +97,11 @@ var TaskRunner = {
           options: {
           }
         },
+        deleteLocalTag: {
+          command: 'git tag -d <%= grunt.option(\"versionNumber\") %>',
+          options: {
+          }
+        },
         getDevelopBranch: {
           command: 'git checkout develop',
           options: {
@@ -140,55 +145,55 @@ var TaskRunner = {
      });
     },
     replaceBower:function(){
-       var done = this.async();
-      if(TaskRunner._replaceBower){
-        TaskRunner._grunt.task.run( 'replace' );
-         done();
-      }else{
-         done();
-      }
-    },
-    force:function(set){
-      if (set === "on") {
-        TaskRunner._grunt.option("force",true);
-      }
-      else if (set === "off") {
-        TaskRunner._grunt.option("force",false);
-      }
-    }
-  },
-  bumpVersionNumber: function (grunt) {
-    var type = "patch";
-    if (grunt.option("minor")) {
-      type = "minor";
-    } else if (grunt.option("major")) {
-      type = "major";
-    }
-    var arr = grunt.option("versionNumber").split(".");
-    switch (type) {
-      case 'minor':
-      arr[1] = Number(arr[1]) + 1;
-      arr[2] = "0";
-      break;
-      case 'patch':
-      arr[2] = Number(arr[2]) + 1;
-      break;
-      case 'major':
-      arr[0] = "v" + String(Number(arr[0].replace("v", "")) + 1);
-      arr[1] = "0";
-      arr[2] = "0";
-      break;
-    }
-    grunt.option("versionNumber", arr.join("."));
-    grunt.log.ok("New Tag created" + arr.join("."));
-  },
-  register: function (grunt) {
+     var done = this.async();
+     if(TaskRunner._replaceBower){
+      TaskRunner._grunt.task.run( 'replace' );
+      done();
+    }else{
+     done();
+   }
+ },
+ force:function(set){
+  if (set === "on") {
+    TaskRunner._grunt.option("force",true);
+  }
+  else if (set === "off") {
+    TaskRunner._grunt.option("force",false);
+  }
+}
+},
+bumpVersionNumber: function (grunt) {
+  var type = "patch";
+  if (grunt.option("minor")) {
+    type = "minor";
+  } else if (grunt.option("major")) {
+    type = "major";
+  }
+  var arr = grunt.option("versionNumber").split(".");
+  switch (type) {
+    case 'minor':
+    arr[1] = Number(arr[1]) + 1;
+    arr[2] = "0";
+    break;
+    case 'patch':
+    arr[2] = Number(arr[2]) + 1;
+    break;
+    case 'major':
+    arr[0] = "v" + String(Number(arr[0].replace("v", "")) + 1);
+    arr[1] = "0";
+    arr[2] = "0";
+    break;
+  }
+  grunt.option("versionNumber", arr.join("."));
+  grunt.log.ok("New Tag created" + arr.join("."));
+},
+register: function (grunt) {
     //register custom tasks
     for(var key in this.registerCustomTasks){
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
+    grunt.registerTask('release', ['shell:getReleaseBranch', 'shell:fetchTags','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:getLatestTag','tagPrompt','force:on','shell:deleteLocalTag','force:off','shell:createReleaseTag','shell:pushReleaseBranch','shell:getDevelopBranch']);
   }
 
 }
