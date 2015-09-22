@@ -155,10 +155,10 @@ var TaskRunner = {
     },
     force:function(set){
       if (set === "on") {
-        grunt.option("force",true);
+        TaskRunner._grunt.option("force",true);
       }
       else if (set === "off") {
-        grunt.option("force",false);
+        TaskRunner._grunt.option("force",false);
       }
     }
   },
