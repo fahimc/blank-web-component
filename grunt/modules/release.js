@@ -140,9 +140,12 @@ var TaskRunner = {
      });
     },
     replaceBower:function(){
+       var done = this.async();
       if(TaskRunner._replaceBower){
         TaskRunner._grunt.task.run( 'replace' );
+         done();
       }else{
+         done();
       }
     },
     force:function(set){
