@@ -17,7 +17,9 @@ var TaskRunner = {
     grunt.loadNpmTasks('grunt-replace');
   },
   getGruntConfig: function (grunt) {
-
+    var project = grunt.option('project') || './';
+    var folderName = project.substr(project.lastIndexOf('\\') + 1);
+    
     return {
       replace: {
         bower: {
@@ -31,10 +33,10 @@ var TaskRunner = {
           },
           files: [
           {
-            cwd: './',
+            cwd: project,
             expand: true,
             src: ['**/*.{html,xhtml,htm,js}', '!**/bower_components/**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
-            dest: './'
+            dest: project
           }
           ]
         }
@@ -44,7 +46,7 @@ var TaskRunner = {
           command: 'git checkout release',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -52,7 +54,7 @@ var TaskRunner = {
           command: 'git pull origin release',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -65,7 +67,7 @@ var TaskRunner = {
           command: 'git fetch --tags origin release',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -73,7 +75,7 @@ var TaskRunner = {
           command: 'git describe --tags --abbrev=0',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             },
             callback: function (exitCode, stdOutStr, stdErrStr, done) {
               if (stdErrStr) {
@@ -119,7 +121,7 @@ var TaskRunner = {
           command: 'git checkout develop',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },

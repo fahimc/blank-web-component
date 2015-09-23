@@ -19,51 +19,54 @@ var TaskRunner = {
     grunt.loadNpmTasks('grunt-contrib-clean');
   },
   getGruntConfig: function (grunt) {
-    var folder = process.cwd().substr(process.cwd().lastIndexOf('\\') + 1);
-    var project = grunt.option('project') || folder;
-    console.log(project);
+    var project = grunt.option('project') || './';
+    var folderName = project.substr(project.lastIndexOf('\\') + 1);
+    console.log(project+"/tmp");
     return {
       replace: {
         init: {
           options: {
             patterns: [{
               match: /jet-seed|jet-plugin-seed/g,
-              replacement: project
+              replacement: folderName
             }, {
               match: /Seed/g,
               replacement: function () {
-                var index = project.lastIndexOf('-');
+                var index = folderName.lastIndexOf('-');
                 if (index > -1) {
-                  var replaceText = project.substring(index + 1);
+                  var replaceText = folderName.substring(index + 1);
                   return replaceText[0].toUpperCase() + replaceText.substring(1);
                 } else
-                  return project;
+                  return folderName;
               }
             }]
           },
           files: [{
-            cwd: './',
+            cwd: project,
             expand: true,
             src: ['**/*','!**/Gruntfile.js','!**/node_modules/**','!**/grunt/**'],
-            dest: './'
+            dest: project
           }]
         }
       },
       copy: {
         init: {
           expand: true,
-          cwd: path.join('./', 'tmp'),
+          cwd: path.join(project, 'tmp'),
           dot: true,
           src: ['**', '!.git/**'],
-          dest: './',
+          dest: project,
           rename: function (dest, src) {
-            return path.join(dest, src.replace(/jet-seed|jet-plugin-seed/g, project));
+            return path.join(dest, src.replace(/jet-seed|jet-plugin-seed/g, folderName));
           }
         }
       },
       clean: {
         temp: {
-          src: ["./tmp"]
+          options:{
+            force:true
+          },
+          src: [project+"\\tmp"]
         }
       },
       shell: {
@@ -71,7 +74,7 @@ var TaskRunner = {
           command: 'git clone ' + TaskRunner.seedTypes[TaskRunner.getSeedType()] + ' tmp',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -79,7 +82,7 @@ var TaskRunner = {
           command: 'bower install',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         }
