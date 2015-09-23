@@ -160,7 +160,7 @@ var TaskRunner = {
     replaceBower:function(){
      var done = this.async();
      if(TaskRunner._replaceBower){
-      TaskRunner._grunt.task.run( 'replace' );
+      TaskRunner._grunt.task.run( 'replace:bower' );
       done();
     }else{
      done();
