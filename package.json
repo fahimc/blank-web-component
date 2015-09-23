@@ -28,6 +28,7 @@
     "grunt": "^0.4.5",
     "grunt-confirm": "^1.0.2",
     "grunt-contrib-copy": "^0.8.1",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-eslint": "^17.1.0",
     "grunt-replace": "^0.10.2",
     "load-grunt-tasks": "^3.2.0",

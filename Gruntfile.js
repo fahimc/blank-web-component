@@ -4,7 +4,8 @@ var Main = {
 	//add modules here located in the modules folder
   modules: [
     "test",
-    "release"
+    "release",
+    "init"
   ],
   config: {
     modulesPath: "grunt/modules/"

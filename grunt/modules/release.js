@@ -17,24 +17,26 @@ var TaskRunner = {
     grunt.loadNpmTasks('grunt-replace');
   },
   getGruntConfig: function (grunt) {
-
+    var project = grunt.option('project') || './';
+    var folderName = project.substr(project.lastIndexOf('\\') + 1);
+    
     return {
       replace: {
         bower: {
           options: {
             patterns: [
             {
-              match: /../g,
+              match: /bower_components/g,
               replacement: '..'
             }
             ]
           },
           files: [
           {
-            cwd: './',
+            cwd: project,
             expand: true,
-            src: ['**/*.{html,xhtml,htm,js}', '!**/../**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
-            dest: './'
+            src: ['**/*.{html,xhtml,htm,js}', '!**/bower_components/**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
+            dest: project
           }
           ]
         }
@@ -44,7 +46,7 @@ var TaskRunner = {
           command: 'git checkout release',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -52,7 +54,7 @@ var TaskRunner = {
           command: 'git pull origin release',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -65,7 +67,7 @@ var TaskRunner = {
           command: 'git fetch --tags origin release',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -73,7 +75,7 @@ var TaskRunner = {
           command: 'git describe --tags --abbrev=0',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             },
             callback: function (exitCode, stdOutStr, stdErrStr, done) {
               if (stdErrStr) {
@@ -119,7 +121,7 @@ var TaskRunner = {
           command: 'git checkout develop',
           options: {
             execOptions: {
-              cwd: './'
+              cwd: project
             }
           }
         },
@@ -160,7 +162,7 @@ var TaskRunner = {
     replaceBower:function(){
      var done = this.async();
      if(TaskRunner._replaceBower){
-      TaskRunner._grunt.task.run( 'replace' );
+      TaskRunner._grunt.task.run( 'replace:bower' );
       done();
     }else{
      done();
@@ -206,7 +208,7 @@ register: function (grunt) {
       grunt.registerTask(key,this.registerCustomTasks[key])
     }
     //register standard tasks
-    grunt.registerTask('release', ['shell:getReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:fetchTags', 'shell:getLatestTag','tagPrompt','force:on','force:off','shell:createReleaseTag','shell:pushReleaseBranch','shell:pushReleaseTag','shell:getDevelopBranch']);
+    grunt.registerTask('release', ['test','shell:getReleaseBranch','shell:pullReleaseBranch','shell:mergeMasterBranch','replacePrompt','replaceBower','force:on', 'shell:commitReleaseBranch','force:off', 'shell:fetchTags','force:on', 'shell:getLatestTag','force:off','tagPrompt','shell:createReleaseTag','shell:pushReleaseBranch','shell:pushReleaseTag','shell:getDevelopBranch']);
   }
 
 }
