@@ -26,7 +26,7 @@ var TaskRunner = {
           options: {
             patterns: [
             {
-              match: /bower_components/g,
+              match: /../g,
               replacement: '..'
             }
             ]
@@ -35,7 +35,7 @@ var TaskRunner = {
           {
             cwd: project,
             expand: true,
-            src: ['**/*.{html,xhtml,htm,js}', '!**/bower_components/**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
+            src: ['**/*.{html,xhtml,htm,js}', '!**/../**', '!**/node_modules/**', '!**/lib/**', '!**/Gruntfile.js'],
             dest: project
           }
           ]
